@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Новости</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .news-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .news-item {
+            padding: 10px 0;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .load-more-button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            text-align: center;
+            width: 200px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<ul id="newsList" class="news-list">
+        <!-- Сюда будут добавляться новости -->
+</ul>
+
+<div id="loader" class="load-more-button">
+    Загрузить еще новости
+</div>
+
+ <script>
+    var newsData = [
+            "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec sit amet risus risus. Sed hendrerit eget velit sed congue. Phasellus laoreet iaculis blandit. Vivamus at ultricies enim. Fusce aliquam, eros eu egestas congue, arcu est tincidunt mauris, quis elementum velit massa non risus. Nunc in ipsum et tellus dignissim vulputate. Maecenas fermentum nec elit vel pharetra. Proin aliquam elementum vehicula. Nunc at ante sed erat faucibus elementum eu sed orci. Vivamus quis dignissim ex. Suspendisse iaculis non sem commodo congue.",
+            "In placerat diam sed ultricies placerat. Etiam aliquet mauris mi, sed consequat lorem placerat ac. Vestibulum congue aliquam leo, sed ultricies ex molestie a. Duis ex nunc, ultrices quis sapien ut, vulputate venenatis nibh. Suspendisse potenti. Maecenas feugiat erat quam, in aliquam est vulputate sed. Integer ac porta massa. Nulla at lorem tincidunt odio commodo finibus. Proin sodales vestibulum ipsum id porttitor. Sed dolor sem, finibus vel cursus non, consequat eu metus. Etiam congue justo elit, vel condimentum diam posuere non. Curabitur dapibus volutpat erat. In euismod vehicula est in faucibus. Mauris tempor, metus ut rhoncus pretium, turpis metus convallis libero, molestie porttitor purus neque non odio. Ut id sem ullamcorper, porttitor augue at, lobortis libero.",
+            "Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Phasellus mauris orci, convallis quis risus quis, hendrerit tempor velit. Sed mauris nibh, fermentum accumsan placerat ac, vestibulum vel est. Etiam scelerisque ut orci ac elementum. Duis ullamcorper auctor justo nec pretium. Aenean mattis tincidunt ipsum sed interdum. Nam ultricies sit amet tellus in pulvinar. Praesent semper ante at leo condimentum hendrerit. Aliquam purus risus, ornare at interdum sed, molestie a massa. Fusce eget porttitor sem. Mauris ut lacus dictum, sagittis mi pharetra, vehicula dui. Nullam rutrum vehicula dolor, nec sodales mauris. Donec eu lorem dictum, volutpat erat at, convallis leo.",
+            "Nunc eu sapien massa. Integer vel risus lacus. Aliquam libero arcu, auctor quis urna in, porttitor porta nibh. Integer consequat enim ut mauris interdum tristique. Ut tempus, neque quis aliquet finibus, augue mauris dictum nulla, et tempor nisl purus quis sem. Suspendisse non lacus convallis purus pulvinar suscipit sit amet id nisi. Sed pharetra justo sapien, porttitor iaculis nulla mattis non. Quisque sed neque at dolor varius accumsan id quis mi. Phasellus ultricies arcu in felis mattis congue. Proin convallis, arcu et semper porttitor, ex velit accumsan arcu, venenatis porta lorem enim eu elit.",
+            "Vivamus vitae feugiat erat. Cras id nisi ultrices, sollicitudin tortor vitae, venenatis odio. Vestibulum nisi ligula, cursus et sapien quis, lacinia dignissim dolor. Fusce ac est et ante pretium porta ultrices quis quam. Aenean hendrerit augue ipsum, faucibus tristique lectus convallis nec. Quisque venenatis euismod elit quis porttitor. Phasellus tristique suscipit velit, nec euismod lorem volutpat ac. Sed tristique, felis sed placerat varius, est lectus egestas metus, et tincidunt felis urna eget erat. Maecenas risus ante, molestie ultrices velit ac, facilisis lobortis mi. Mauris quis ante hendrerit, venenatis mi et, pretium arcu. Nam at aliquet augue, quis laoreet enim.",
+            "Nunc rhoncus nisi eu euismod efficitur. Sed sit amet metus nunc. Vestibulum aliquam arcu quam, a efficitur velit porttitor quis. Proin ultricies a leo bibendum dictum. Sed vel condimentum dolor. Vestibulum pulvinar mi non massa luctus, quis maximus augue aliquam. Nulla facilisi. Nullam venenatis nec ligula nec ultricies. Aenean sit amet quam dolor. Phasellus pellentesque volutpat consectetur. Aliquam sollicitudin dui sed tortor gravida congue. Donec eu felis at leo cursus malesuada. Fusce eget ligula dui. Aenean ultrices congue arcu id tincidunt. Nulla ac fringilla orci.",
+            "Etiam pharetra metus at leo cursus molestie. Sed molestie arcu nec purus laoreet rutrum. Integer tincidunt mauris non dolor sollicitudin fringilla. Donec dapibus non dolor quis hendrerit. Curabitur ut sagittis purus. Ut dapibus, ex non feugiat bibendum, ipsum nibh viverra ante, sed vehicula ipsum lectus eget nibh. Curabitur porta dapibus fermentum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec in urna porttitor metus pulvinar auctor. Duis malesuada orci dui, nec iaculis turpis facilisis eget.",
+            "Mauris vitae quam arcu. Aenean et velit in ante eleifend congue eu vitae ante. Ut posuere risus ac fringilla commodo. Nunc euismod accumsan eleifend. Etiam ac tristique nisi. Pellentesque vitae sodales eros, in consectetur felis. Quisque malesuada dolor a scelerisque auctor. Quisque at consequat sem. Nunc id quam at ante porttitor venenatis malesuada commodo lorem. Nulla vel ante sed leo pharetra vehicula a eu nunc. Suspendisse potenti. Proin et nibh eget dui sodales consequat eu ac nisl. Cras ultrices tincidunt nisi iaculis ullamcorper. In ac ante in elit mattis fringilla in eu purus",
+            "Pellentesque id imperdiet neque. Donec vestibulum, ex condimentum egestas convallis, arcu sapien scelerisque est, a convallis tortor odio vel purus. Quisque pellentesque sapien quis tellus venenatis, vel porttitor velit gravida. Ut vehicula dignissim tempor. Praesent ac efficitur nisi. Donec eget aliquam sapien, non dictum metus. Duis ac nulla vulputate, commodo risus eu, bibendum mi. Sed ornare ligula sit amet velit sollicitudin auctor. Donec sit amet lorem rhoncus, gravida felis sit amet, pulvinar neque. Quisque convallis, lectus et molestie suscipit, arcu arcu sodales ante, sit amet tincidunt lacus urna ac orci. Proin in finibus orci. Vivamus condimentum erat augue, sit amet sodales arcu consequat eu. Curabitur eu mauris eu orci viverra malesuada quis quis purus.",
+            "Aliquam aliquet tellus velit, non tempor sapien gravida id. Pellentesque malesuada erat mattis, laoreet felis quis, lobortis nisl. Curabitur ullamcorper elementum nunc, ut auctor lacus dapibus a. Interdum et malesuada fames ac ante ipsum primis in faucibus. Nam nec dolor purus. Duis et rhoncus ligula. Ut blandit dui pharetra eleifend accumsan. Nulla sed ligula tincidunt, malesuada lorem a, hendrerit odio. Suspendisse potenti. Nullam volutpat nisl ante, vitae ultricies magna mollis nec. Nam tristique tristique ex. Pellentesque dignissim turpis sit amet urna tristique sollicitudin. In ac sem suscipit, convallis turpis ac, hendrerit neque.",
+            "Donec non pulvinar nulla, ut vestibulum orci. Nullam quis nisl lobortis tellus volutpat ornare. Phasellus semper a mi in bibendum. Vestibulum sagittis mi ex, pulvinar tempus nulla sollicitudin in. In sed neque leo. Quisque sodales eleifend consequat. Nulla ullamcorper eleifend venenatis. Maecenas dignissim, sapien at ultricies interdum, tellus augue hendrerit lacus, id volutpat nisi sem id turpis. Nam quis condimentum nisi. Suspendisse ut bibendum ipsum. Quisque sed pulvinar nulla. Nulla molestie placerat neque tempus lacinia. Donec egestas lectus vel porttitor varius. Aenean felis quam, hendrerit in interdum vitae, mollis id libero. Donec ut luctus est, a tempor neque.",
+            "Nullam rhoncus dui id tortor vulputate ultrices. Fusce posuere venenatis mauris a dictum. Aliquam gravida aliquam nisl. Donec finibus eros id sodales gravida. Nullam vehicula pharetra arcu et rutrum. Suspendisse non tincidunt nisi, ac finibus velit. Praesent non rhoncus erat. Phasellus et nisl quis leo accumsan venenatis. Ut ac ligula at quam elementum semper. Sed metus massa, porttitor eget velit vel, ullamcorper fringilla dui. Proin dui nulla, posuere a erat non, pellentesque lobortis mi. Curabitur rhoncus neque id cursus cursus. Aliquam rhoncus id dolor at blandit. In iaculis ipsum ut diam convallis porta. Proin pulvinar tellus sit amet erat porta, eleifend volutpat sapien viverra.",
+            "Aliquam erat volutpat. In ipsum lectus, sodales ac erat id, cursus pharetra quam. Sed ut convallis eros, sit amet interdum nulla. Nullam ut eleifend ante. Integer in metus sed mi sodales auctor et ac arcu. Integer rutrum eget urna sit amet tincidunt. Phasellus et dictum risus, vel faucibus ligula. Nulla sodales finibus nisl, venenatis volutpat erat commodo eget.",
+            "In eget urna vel sem finibus tempor at vitae urna. Etiam lobortis enim in velit gravida eleifend sed eu augue. Curabitur at volutpat elit. Praesent congue vehicula lorem. Quisque vitae sem et lorem fringilla laoreet sed et turpis. Etiam dictum feugiat orci, quis elementum libero venenatis eu. Vestibulum condimentum vulputate enim in imperdiet. Vivamus convallis mauris eu tincidunt accumsan. Nulla non nunc est.",
+            "Etiam tempor velit a interdum consectetur. Phasellus maximus malesuada libero vel bibendum. Nulla non imperdiet nisi. Cras ultricies dolor ut lorem tincidunt egestas. Proin placerat consectetur orci eu viverra. Maecenas vehicula euismod venenatis. Sed elementum nulla vel tortor posuere ultricies.",
+            "",
+            "",
+            "",
+            "",
+    ];
+
+    var newsListElement = document.getElementById("newsList");
+    var loaderElement = document.getElementById("loader"); 
+    var newsIndex = 0; // Текущий индекс новости
+    var newsPerPage = 3; // Количество новостей, загружаемых за раз
+
+    function addNewsItem(newsItem) {
+        var li = document.createElement("li");
+        li.className = "news-item";
+        li.textContent = newsItem;
+        newsListElement.appendChild(li);
+    }
+
+    function loadMoreNews() {
+        var endIndex = newsIndex + newsPerPage;
+
+        for (var i = newsIndex; i < endIndex; i++) {
+            if (newsData[i]) {
+                addNewsItem(newsData[i]);
+                newsIndex++;
+            } 
+            else {
+                loaderElement.style.display = "none";
+                break;
+            }
+        }
+    }
+    // прогрузка по скроллу
+    function handleScroll() {
+        var scrollPosition = window.innerHeight + window.pageYOffset;
+        var pageHeight = document.documentElement.scrollHeight;
+
+        if (scrollPosition >= pageHeight) {
+            loadMoreNews();
+        }
+    }
+    // Прогрузка по кнопке
+    function handleLoadMoreClick() {
+        loadMoreNews();
+    }
+
+
+    window.addEventListener("scroll", handleScroll);
+    loaderElement.addEventListener("click", handleLoadMoreClick);
+    loadMoreNews();
+</script>
+</body>
+</html>

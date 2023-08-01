@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* 1 */
+        .slider {
+            width: 300px;
+            height: 10px;
+            background-color: lightgray;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .slider-handle {
+            width: 20px;
+            height: 20px;
+            background-color: blue;
+            position: absolute;
+            top: -5px;
+        }
+
+        /* 2 */
+        .gallery {
+            width: 400px;
+            height: 300px;
+            border: 1px solid black;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gallery img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .gallery-controls {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .gallery-controls button {
+            margin: 0 5px;
+        }
+        /* 3 */
+        .accordion-header {
+            background-color: #f5f5f5;
+            color: #333;
+            cursor: pointer;
+            padding: 10px;
+            width: 400px;
+            border: 1px solid black;
+        }
+
+        .accordion-content {
+            display: none;
+            padding: 10px;
+            border: 1px solid black;
+            width: 400px;
+        }
+
+        /* 5 */
+        table {
+            border-collapse: collapse;
+            width: 400px;
+            margin: 0 auto;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        th {
+            font-weight: 600;
+            text-align: center;
+        }
+        td {
+            text-align: center;
+        }
+
+        
+    </style>
+</head>
+<body>
+    <!-- 1 -->
+<h2>Задание 1</h2>
+<div class="slider" id="slider">
+    <div class="slider-handle" id="slider-handle"></div>
+</div>
+
+<!-- 2 -->
+<h2>Задание 2</h2>
+<div class="gallery" id="image-gallery">
+    <img src="" alt="" />
+    <div class="gallery-controls">
+        <button onclick="showPreviousImage()" disabled>Назад</button>
+        <button onclick="showNextImage()" disabled>Вперед</button>
+    </div>
+</div>
+
+<!-- 3 -->
+<h2>Задание 3</h2>
+<div class="accordion">
+    <div class="accordion-header" onclick="toggleAccordion(event)">Заголовок 1</div>
+    <div class="accordion-content">
+        <p>Содержимое блока 1</p>
+    </div>
+
+    <div class="accordion-header" onclick="toggleAccordion(event)">Заголовок 2</div>
+    <div class="accordion-content">
+        <p>Содержимое блока 2</p>
+    </div>
+
+    <div class="accordion-header" onclick="toggleAccordion(event)">Заголовок 3</div>
+    <div class="accordion-content">
+        <p>Содержимое блока 3</p>
+    </div>
+</div>
+
+<!-- 4 -->
+<h2>Задание 4</h2>
+<button onclick="document.location='news.html'">Нажми, чтобы читать новости</button>
+
+<!-- 5 -->
+<h2>Задание 5</h2>
+<h4>Календарь</h4>
+<form>
+    <label for="month">Месяц:</label>
+    <input type="number" id="month" min="1" max="12">
+    <label for="year">Год:</label>
+    <input type="number" id="year">
+
+    <button type="button" onclick="generateCalendar()">Показать</button>
+</form>
+<table id="calendar"></table>
+
+
+
+<script>
+// 1
+var slider = document.getElementById('slider');
+    var handle = document.getElementById('slider-handle');
+    var isDragging = false;
+    var startPosition;
+    var prevPosition;
+    var sliderWidth = slider.offsetWidth - handle.offsetWidth;
+        
+    handle.addEventListener('mousedown', function(event) {
+        isDragging = true;
+        startPosition = event.clientX;
+        prevPosition = startPosition;
+            
+        handle.style.transition = 'none';
+        
+        event.preventDefault();
+    });
+        
+    document.addEventListener('mousemove', function(event) {
+        if (isDragging) {
+            var currentPosition = event.clientX;
+            var delta = currentPosition - prevPosition;
+            
+            var handlePosition = handle.offsetLeft + delta;
+            if (handlePosition < 0) {
+                handle.style.left = '0';
+            } else if (handlePosition > sliderWidth) {
+                handle.style.left = sliderWidth + 'px';
+            } else {
+                handle.style.left = handlePosition + 'px';
+            }
+            
+            prevPosition = currentPosition;
+        }
+    });
+    
+    document.addEventListener('mouseup', function(event) {
+        if (isDragging) {
+            var currentPosition = event.clientX;
+            var delta = currentPosition - startPosition;
+            
+            var handlePosition = handle.offsetLeft + delta;
+            if (handlePosition < 0) {
+                handlePosition = 0;
+            } else if (handlePosition > sliderWidth) {
+                handlePosition = sliderWidth;
+            }
+            
+            handle.style.transition = 'left 0.3s';
+            handle.style.left = handlePosition + 'px';
+            
+            isDragging = false;
+        }
+    });
+
+
+// 2
+var images = [
+    'image1.jpg',
+    'image2.jpg'
+];
+        
+var imageGallery = document.getElementById('image-gallery');
+var imageElement = imageGallery.querySelector('img');
+var previousButton = imageGallery.querySelector('button:nth-child(1)');
+var nextButton = imageGallery.querySelector('button:nth-child(2)');
+var currentIndex = 0;
+        
+function showPreviousImage() {
+    currentIndex--;
+    updateImage();
+}
+        
+function showNextImage() {
+    currentIndex++;
+    updateImage();
+}
+        
+function updateImage() {
+    imageElement.src = images[currentIndex];
+            
+    previousButton.disabled = (currentIndex === 0);
+    nextButton.disabled = (currentIndex === images.length - 1);
+}
+        
+updateImage();
+
+// 3
+function toggleAccordion(event) {
+    var accordionHeader = event.target;
+    var accordionContent = accordionHeader.nextElementSibling;
+
+    if (accordionContent.style.display === 'block') {
+        accordionContent.style.display = 'none';
+    } 
+    else {
+        accordionContent.style.display = 'block';
+    }
+}
+
+//5
+function generateCalendar() {
+    var monthInput = document.getElementById('month');
+    var yearInput = document.getElementById('year');
+    var calendarTable = document.getElementById('calendar');
+
+    var month = parseInt(monthInput.value);
+    var year = parseInt(yearInput.value);
+
+    // Проверка на валидность введенных значений
+    if (isNaN(month) || isNaN(year) || month < 1 || month > 12) {
+        alert('Введите корректные значения для месяца и года');
+        return;
+    }
+
+    // Получение первого дня месяца
+    var firstDay = new Date(year, month - 1, 1);
+    //var firstDayOfWeek = firstDay.getDay(); 
+    var firstDayOfWeek = (firstDay.getDay() + 6) % 7;
+
+    // Очистка таблицы календаря
+    calendarTable.innerHTML = '';
+
+    // Создание заголовка таблицы с названиями дней недели
+    var daysOfWeek = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
+    var headerRow = document.createElement('tr');
+    for (var i = 0; i < 7; i++) {
+        var th = document.createElement('th');
+        th.textContent = daysOfWeek[i];
+        headerRow.appendChild(th);
+    }
+    calendarTable.appendChild(headerRow);
+
+    // Определение количества дней в месяце
+    var daysInMonth = new Date(year, month, 0).getDate();
+
+    // Создание ячеек таблицы с днями месяца
+    var currentDay = 1;
+    for (var i = 0; i < 6; i++) {
+        var row = document.createElement('tr');
+        for (var j = 0; j < 7; j++) {
+            var td = document.createElement('td');
+            if (i === 0 && j < firstDayOfWeek) {
+                td.textContent = '';
+            }
+            else if (currentDay > daysInMonth) {
+                td.textContent = '';
+            } 
+            else {
+                td.textContent = currentDay;
+                currentDay++;
+            }
+            row.appendChild(td);
+        }
+        calendarTable.appendChild(row);
+    }
+}
+
+
+
+</script>
+</body>
+</html>
